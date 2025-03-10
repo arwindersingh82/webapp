@@ -22,41 +22,48 @@ pipeline {
 
         stage('Remove old image') {
             steps {
-                sh """
-                ssh root@${DOCKER_SERVER} << EOF
-                docker rm ${DOCKER_IMAGE} || true
-                """
+                sshagent(['arnieAsusMainKey']) {
+                    sh """
+                    ssh root@${DOCKER_SERVER} << EOF
+                    docker rm ${DOCKER_IMAGE} || true
+                }    """
             }
         }
 
         stage('Checkout the Latest Code from GitHub') {
             steps {
-                sh """
-                ssh root@${DOCKER_SERVER} << EOF
-                mkdir -p /root/webapp
-                cd /root/webapp  # Change to your project directory
-                git clone ${GIT_REPO}
-                """
+                sshagent(['arnieAsusMainKey']) {
+                    sh """
+                    ssh root@${DOCKER_SERVER} << EOF
+                    mkdir -p /root/webapp
+                    cd /root/webapp  # Change to your project directory
+                    git clone ${GIT_REPO}
+                    """
+                }
             }
         }
 
         stage('Build the docker image') {
             steps {
-                sh """
-                ssh root@${DOCKER_SERVER} << EOF
-                docker build -t ${DOCKER_IMAGE}:${DOCKER_TAG} .
-                EOF
-                """
+                sshagent(['arnieAsusMainKey']) {
+                    sh """
+                    ssh root@${DOCKER_SERVER} << EOF
+                    docker build -t ${DOCKER_IMAGE}:${DOCKER_TAG} .
+                    EOF
+                    """
+                }
             }
         }
 
         stage('Run the docker image') {
             steps {
-                sh """
-                ssh root@${DOCKER_SERVER} << EOF
-                docker run -d -p 8080:80 --name ${DOCKER_IMAGE} ${DOCKER_IMAGE}:${DOCKER_TAG}
-                EOF
-                """
+                sshagent(['arnieAsusMainKey']) {
+                    sh """
+                    ssh root@${DOCKER_SERVER} << EOF
+                    docker run -d -p 8080:80 --name ${DOCKER_IMAGE} ${DOCKER_IMAGE}:${DOCKER_TAG}
+                    EOF
+                    """
+                }
             }
         }
 
