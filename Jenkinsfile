@@ -23,8 +23,9 @@ pipeline {
             steps {
                 sshagent(['arnieAsusMainKey']) {
                     sh """
-                    ssh root@${DOCKER_SERVER} << EOF
+                    ssh root@${DOCKER_SERVER} << 'EOF'
                     docker rm ${DOCKER_IMAGE} || true
+                    EOF
                     """
                 }
             }
@@ -34,7 +35,7 @@ pipeline {
             steps {
                 sshagent(['arnieAsusMainKey']) {
                     sh """
-                    ssh root@${DOCKER_SERVER} << EOF
+                    ssh root@${DOCKER_SERVER} << 'EOF'
                     mkdir -p /root/webapp
                     cd /root/webapp  # Change to your project directory
                     git clone ${GIT_REPO}
@@ -48,7 +49,7 @@ pipeline {
             steps {
                 sshagent(['arnieAsusMainKey']) {
                     sh """
-                    ssh root@${DOCKER_SERVER} << EOF
+                    ssh root@${DOCKER_SERVER} << 'EOF'
                     docker build -t ${DOCKER_IMAGE}:${DOCKER_TAG} .
                     EOF
                     """
@@ -60,7 +61,7 @@ pipeline {
             steps {
                 sshagent(['arnieAsusMainKey']) {
                     sh """
-                    ssh root@${DOCKER_SERVER} << EOF
+                    ssh root@${DOCKER_SERVER} << 'EOF'
                     docker run -d -p 8080:80 --name ${DOCKER_IMAGE} ${DOCKER_IMAGE}:${DOCKER_TAG}
                     EOF
                     """
