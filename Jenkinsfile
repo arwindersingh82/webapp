@@ -10,7 +10,7 @@ pipeline {
         DOCKER_SERVER = "dockserv"
     }
 
-//                 git ${GIT_REPO} // Change to your repos
+//                 git ${GIT_REPO} // Change to your repo
 
     stages {
         stage('Checkout Code') {
@@ -24,10 +24,9 @@ pipeline {
                 sshagent(['arnieAsusMainKey']) {
                     sh """
                     ssh root@${DOCKER_SERVER} << EOF
-
+                    docker rm ${DOCKER_IMAGE}
+                    EOF
                     """
-
-//                                         docker rm ${DOCKER_IMAGE}
                 }
             }
         }
@@ -40,6 +39,7 @@ pipeline {
                     mkdir -p /root/webapp
                     cd /root/webapp  # Change to your project directory
                     git clone ${GIT_REPO}
+                    EOF
                     """
                 }
             }
