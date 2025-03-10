@@ -15,7 +15,6 @@ pipeline {
     stages {
         stage('Checkout Code') {
             steps {
-
                 git 'https://github.com/arwindersingh82/webapp.git'
             }
         }
@@ -26,7 +25,8 @@ pipeline {
                     sh """
                     ssh root@${DOCKER_SERVER} << EOF
                     docker rm ${DOCKER_IMAGE} || true
-                }    """
+                    """
+                }
             }
         }
 
@@ -109,4 +109,3 @@ pipeline {
 //         }
         }
 }
-
