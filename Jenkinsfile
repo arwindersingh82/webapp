@@ -19,17 +19,18 @@ pipeline {
             }
         }
 
-//         stage('Remove old image') {
-//             steps {
-//                 sshagent(['arnieAsusMainKey']) {
-//                     sh """
-//                     ssh root@${DOCKER_SERVER} << EOF
-//                     docker rm ${DOCKER_IMAGE}
-//                     EOF
-//                     """
-//                 }
-//             }
-//         }
+        stage('Remove old image') {
+            steps {
+                sshagent(['arnieAsusMainKey']) {
+                    sh """
+                    ssh root@${DOCKER_SERVER} << EOF
+                    ls
+                    docker rm ${DOCKER_IMAGE}
+                    EOF
+                    """
+                }
+            }
+        }
 
         stage('Checkout the Latest Code from GitHub') {
             steps {
