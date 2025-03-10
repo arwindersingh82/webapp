@@ -18,6 +18,7 @@ pipeline {
                 git 'https://github.com/arwindersingh82/webapp.git'
             }
         }
+//
 
         stage('Remove old image') {
             steps {
