@@ -10,7 +10,7 @@ pipeline {
         DOCKER_SERVER = "dockserv"
     }
 
-//                 git ${GIT_REPO} // Change to your repo
+//                 git ${GIT_REPO} // Change to your repos
 
     stages {
         stage('Checkout Code') {
@@ -24,8 +24,10 @@ pipeline {
                 sshagent(['arnieAsusMainKey']) {
                     sh """
                     ssh root@${DOCKER_SERVER} << EOF
-                    docker rm ${DOCKER_IMAGE}
+
                     """
+
+//                                         docker rm ${DOCKER_IMAGE}
                 }
             }
         }
