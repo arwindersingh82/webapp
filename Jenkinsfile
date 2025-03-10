@@ -4,7 +4,7 @@ pipeline {
     environment {
         DOCKER_IMAGE = "webapp"
         DOCKER_TAG = "latest"
-//         DOCKER_REGISTRY = "arwindersingh82"
+        DOCKER_REGISTRY = "arwindersingh82"
         LOCAL_DOCKER_HOST = "tcp://dockserv:2375"
     }
 
@@ -51,7 +51,8 @@ pipeline {
 //                     EOF
 //                     """
 //                 }
-            }
-        }    }
+//             }
+        }
+        }
 }
 
