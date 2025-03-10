@@ -10,10 +10,12 @@ pipeline {
         DOCKER_SERVER = "dockserv"
     }
 
+//                 git ${GIT_REPO} // Change to your repo
+
     stages {
         stage('Checkout Code') {
             steps {
-//                 git ${GIT_REPO} // Change to your repo
+
                 git 'https://github.com/arwindersingh82/webapp.git'
             }
         }
