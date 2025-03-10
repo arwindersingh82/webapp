@@ -25,7 +25,6 @@ pipeline {
                     sh """
                     ssh root@${DOCKER_SERVER} << EOF
                     docker rm ${DOCKER_IMAGE}
-                    EOF
                     """
                 }
             }
