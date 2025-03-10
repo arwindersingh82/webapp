@@ -24,7 +24,7 @@ pipeline {
                 sshagent(['arnieAsusMainKey']) {
                     sh """
                     ssh root@${DOCKER_SERVER} << EOF
-                    docker rm ${DOCKER_IMAGE}
+                    docker rm ${DOCKER_IMAGE} || true
                     """
                 }
             }
