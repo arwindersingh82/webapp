@@ -7,12 +7,15 @@ pipeline {
         DOCKER_REGISTRY = "arwindersingh82"
         LOCAL_DOCKER_HOST = "tcp://dockserv:2375"
         GIT_REPO = "https://github.com/arwindersingh82/webapp.git"
+        DOCKER_SERVER = "dockserv"
     }
+
+//                 git ${GIT_REPO} // Change to your repo
 
     stages {
         stage('Checkout Code') {
             steps {
-//                 git ${GIT_REPO} // Change to your repo
+
                 git 'https://github.com/arwindersingh82/webapp.git'
             }
         }
