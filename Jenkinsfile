@@ -7,6 +7,7 @@ pipeline {
         DOCKER_REGISTRY = "arwindersingh82"
         LOCAL_DOCKER_HOST = "tcp://dockserv:2375"
         GIT_REPO = "https://github.com/arwindersingh82/webapp.git"
+        DOCKER_SERVER = "dockserv"
     }
 
     stages {
