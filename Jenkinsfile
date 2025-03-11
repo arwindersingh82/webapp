@@ -8,6 +8,7 @@ pipeline {
         LOCAL_DOCKER_HOST = "tcp://dockserv:2375"
         GIT_REPO = "https://github.com/arwindersingh82/webapp.git"
         DOCKER_SERVER = "root@dockserv"
+        SSH_COMMAND = "ssh -o StrictHostKeyChecking=no ${DOCKER_SERVER}"
     }
 
 //                 git ${GIT_REPO} // Change to your repo
@@ -23,9 +24,7 @@ pipeline {
             steps {
                 sshagent(['arnieAsusMainKey']) {
                     sh """
-                    ssh -o StrictHostKeyChecking=no ${DOCKER_SERVER} << 'EOF'
-                    docker rm ${DOCKER_IMAGE} || true
-                    EOF
+                    ${SSH_COMMAND} "docker rm ${DOCKER_IMAGE} || true"
                     """
                 }
             }
@@ -35,11 +34,9 @@ pipeline {
             steps {
                 sshagent(['arnieAsusMainKey']) {
                     sh """
-                    ssh -o StrictHostKeyChecking=no ${DOCKER_SERVER} << 'EOF'
-                    mkdir -p /root/webapp
-                    cd /root/webapp  # Change to your project directory
-                    git clone ${GIT_REPO}
-                    EOF
+                    ${SSH_COMMAND} "mkdir -p /root/webapp"
+                    ${SSH_COMMAND} "cd /root/webapp"  # Change to your project directory
+                    ${SSH_COMMAND} "git clone ${GIT_REPO}""
                     """
                 }
             }
@@ -49,9 +46,7 @@ pipeline {
             steps {
                 sshagent(['arnieAsusMainKey']) {
                     sh """
-                    ssh -o StrictHostKeyChecking=no ${DOCKER_SERVER} << 'EOF'
-                    docker build -t ${DOCKER_IMAGE}:${DOCKER_TAG} .
-                    EOF
+                    ${SSH_COMMAND} "docker build -t ${DOCKER_IMAGE}:${DOCKER_TAG} ."
                     """
                 }
             }
@@ -61,9 +56,7 @@ pipeline {
             steps {
                 sshagent(['arnieAsusMainKey']) {
                     sh """
-                    ssh -o StrictHostKeyChecking=no ${DOCKER_SERVER} << 'EOF'
-                    docker run -d -p 8080:80 --name ${DOCKER_IMAGE} ${DOCKER_IMAGE}:${DOCKER_TAG}
-                    EOF
+                    ${SSH_COMMAND} "docker run -d -p 8080:80 --name ${DOCKER_IMAGE} ${DOCKER_IMAGE}:${DOCKER_TAG}"
                     """
                 }
             }
