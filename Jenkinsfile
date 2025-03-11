@@ -46,7 +46,7 @@ pipeline {
             steps {
                 sshagent(['arnieAsusMainKey']) {
                     sh """
-                    ${SSH_COMMAND} "docker build -t ${DOCKER_IMAGE}:${DOCKER_TAG} ."
+                    ${SSH_COMMAND} "docker build . -t ${DOCKER_IMAGE}:${DOCKER_TAG} ."
                     """
                 }
             }
