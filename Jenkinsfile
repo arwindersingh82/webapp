@@ -29,12 +29,12 @@ pipeline {
                 }
             }
         }
+//                     ${SSH_COMMAND} "mkdir -p /root/webapp"
 
         stage('Checkout the Latest Code from GitHub') {
             steps {
                 sshagent(['arnieAsusMainKey']) {
                     sh """
-                    ${SSH_COMMAND} "mkdir -p /root/webapp"
                     ${SSH_COMMAND} "cd /root/"  # Change to your project directory
                     ${SSH_COMMAND} "git clone ${GIT_REPO}""
                     """
