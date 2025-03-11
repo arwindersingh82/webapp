@@ -35,8 +35,7 @@ pipeline {
             steps {
                 sshagent(['arnieAsusMainKey']) {
                     sh """
-                    ${SSH_COMMAND} "cd /root/"  # Change to your project directory
-                    ${SSH_COMMAND} "git clone ${GIT_REPO}""
+                    ${SSH_COMMAND} "cd /root/ && git clone ${GIT_REPO}""
                     """
                 }
             }
@@ -46,8 +45,7 @@ pipeline {
             steps {
                 sshagent(['arnieAsusMainKey']) {
                     sh """
-                    ${SSH_COMMAND} "cd /root/webapp/"
-                    ${SSH_COMMAND} "docker build . -t ${DOCKER_IMAGE}:${DOCKER_TAG} ."
+                    ${SSH_COMMAND} "cd /root/webapp/ && docker build -t ${DOCKER_IMAGE}:${DOCKER_TAG} ."
                     """
                 }
             }
