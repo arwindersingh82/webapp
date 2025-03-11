@@ -35,7 +35,7 @@ pipeline {
                 sshagent(['arnieAsusMainKey']) {
                     sh """
                     ${SSH_COMMAND} "mkdir -p /root/webapp"
-                    ${SSH_COMMAND} "cd /root/webapp"  # Change to your project directory
+                    ${SSH_COMMAND} "cd /root/"  # Change to your project directory
                     ${SSH_COMMAND} "git clone ${GIT_REPO}""
                     """
                 }
