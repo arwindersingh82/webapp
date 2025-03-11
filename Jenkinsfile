@@ -35,7 +35,8 @@ pipeline {
             steps {
                 sshagent(['arnieAsusMainKey']) {
                     sh """
-                    ${SSH_COMMAND} "cd /root/ && git clone ${GIT_REPO}""
+                    ${SSH_COMMAND} "cd /root/ && git clone ${GIT_REPO} || true"
+                    ${SSH_COMMAND} "cd /root/webapp && git pull origin main"
                     """
                 }
             }
