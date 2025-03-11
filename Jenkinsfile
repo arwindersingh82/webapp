@@ -24,7 +24,10 @@ pipeline {
             steps {
                 sshagent(['arnieAsusMainKey']) {
                     sh """
-                    ${SSH_COMMAND} "docker rm ${DOCKER_IMAGE} || true"
+                    ${SSH_COMMAND} "
+                    docker stop ${DOCKER_IMAGE} || true && \
+                    docker rm -f ${DOCKER_IMAGE} || true
+                    "
                     """
                 }
             }
@@ -35,8 +38,10 @@ pipeline {
             steps {
                 sshagent(['arnieAsusMainKey']) {
                     sh """
-                    ${SSH_COMMAND} "cd /root/ && git clone ${GIT_REPO} || true"
-                    ${SSH_COMMAND} "cd /root/webapp && git pull origin main"
+                    ${SSH_COMMAND} "
+                    cd /root/ && git clone ${GIT_REPO} || true && \
+                    cd /root/webapp && git pull origin main
+                    "
                     """
                 }
             }
