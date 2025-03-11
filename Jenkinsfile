@@ -7,7 +7,7 @@ pipeline {
         DOCKER_REGISTRY = "arwindersingh82"
         LOCAL_DOCKER_HOST = "tcp://dockserv:2375"
         GIT_REPO = "https://github.com/arwindersingh82/webapp.git"
-        DOCKER_SERVER = "dockserv"
+        DOCKER_SERVER = "root@dockserv"
     }
 
 //                 git ${GIT_REPO} // Change to your repo
@@ -18,12 +18,13 @@ pipeline {
                 git 'https://github.com/arwindersingh82/webapp.git'
             }
         }
+//
 
         stage('Remove old image') {
             steps {
                 sshagent(['arnieAsusMainKey']) {
                     sh """
-                    ssh root@${DOCKER_SERVER} << 'EOF'
+                    ssh -o StrictHostKeyChecking=no ${DOCKER_SERVER} << 'EOF'
                     docker rm ${DOCKER_IMAGE} || true
                     EOF
                     """
@@ -35,7 +36,7 @@ pipeline {
             steps {
                 sshagent(['arnieAsusMainKey']) {
                     sh """
-                    ssh root@${DOCKER_SERVER} << 'EOF'
+                    ssh -o StrictHostKeyChecking=no ${DOCKER_SERVER} << 'EOF'
                     mkdir -p /root/webapp
                     cd /root/webapp  # Change to your project directory
                     git clone ${GIT_REPO}
@@ -49,7 +50,7 @@ pipeline {
             steps {
                 sshagent(['arnieAsusMainKey']) {
                     sh """
-                    ssh root@${DOCKER_SERVER} << 'EOF'
+                    ssh -o StrictHostKeyChecking=no ${DOCKER_SERVER} << 'EOF'
                     docker build -t ${DOCKER_IMAGE}:${DOCKER_TAG} .
                     EOF
                     """
@@ -61,7 +62,7 @@ pipeline {
             steps {
                 sshagent(['arnieAsusMainKey']) {
                     sh """
-                    ssh root@${DOCKER_SERVER} << 'EOF'
+                    ssh -o StrictHostKeyChecking=no ${DOCKER_SERVER} << 'EOF'
                     docker run -d -p 8080:80 --name ${DOCKER_IMAGE} ${DOCKER_IMAGE}:${DOCKER_TAG}
                     EOF
                     """
